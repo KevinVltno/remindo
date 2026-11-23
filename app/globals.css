@@ -1,26 +1,107 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light dark;
+  --surface: light-dark(#ffffff, #1a1b30);
+  --canvas: light-dark(#f8f8ff, #111222);
+  --ink: light-dark(#1c1b38, #eeedff);
+  --muted: light-dark(#56556d, #bcbbd4);
+  --line: light-dark(#dcdbee, #454560);
+  --indigo: light-dark(#4338ca, #b7b2ff);
+  --error: light-dark(#a51c35, #ffadb9);
+  --success: light-dark(#11613b, #86efac);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+body { @apply min-h-dvh font-sans antialiased; background: var(--canvas); color: var(--ink); }
+.shell { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+.site-header { background: var(--surface); border-bottom: 1px solid var(--line); }
+.site-header nav { @apply flex min-h-16 items-center; }
+.brand { @apply inline-flex items-center gap-2 text-xl font-bold tracking-tight no-underline; }
+a { color: var(--indigo); @apply underline-offset-4; }
+a:hover { @apply underline; }
+h1 { @apply max-w-2xl break-words text-4xl font-bold tracking-tight sm:text-6xl; }
+h2 { @apply text-2xl font-semibold tracking-tight; }
+.hero, .workspace { @apply grid gap-5 py-16 sm:py-24; }
+.hero p, .workspace p, small, .form-switch { color: var(--muted); }
+.auth-shell { @apply grid items-center gap-10 py-12 sm:py-20 lg:grid-cols-[1fr_24rem]; }
+.panel { @apply w-full max-w-md rounded-2xl p-6 sm:p-8; border: 1px solid var(--line); background: var(--surface); }
+.auth-form { @apply mt-6 grid gap-4; }
+.auth-form label { @apply grid gap-1.5 text-sm font-medium; }
+input { @apply min-h-11 w-full rounded-lg px-3 text-base; background: var(--canvas); border: 1px solid var(--line); }
+button, .button { @apply inline-flex min-h-11 items-center justify-center rounded-lg px-4 font-semibold text-white; background: #4338ca; }
+button { @apply cursor-pointer; }
+button:hover, .button:hover { background: #3730a3; text-decoration: none; }
+button:disabled { @apply cursor-wait opacity-60; }
+:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+.actions { @apply flex flex-wrap items-center gap-4; }
+.form-switch, .feedback { @apply mt-5 text-sm; }
+.feedback { @apply rounded-lg border px-3 py-2; }
+.feedback.error { color: var(--error); }
+.feedback.success { color: var(--success); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+.site-header nav { @apply justify-between gap-3; }
+.theme-picker select { @apply min-h-9 text-sm; }
+.workspace { @apply gap-8 py-6 sm:py-10; }
+.stack, .editor { @apply grid gap-4; }
+.editor { @apply max-w-2xl; }
+.editor label, .filters label, .member-form label { @apply grid gap-1 text-sm font-medium; }
+.editor .checkbox { @apply flex min-h-11 items-center gap-3; }
+input[type="checkbox"] { @apply size-5 min-h-0 shrink-0; accent-color: #4338ca; }
+select, textarea { @apply min-h-11 w-full rounded-lg px-3 py-2 text-base; background: var(--canvas); color: var(--ink); border: 1px solid var(--line); }
+.field-pair, .settings-grid { @apply grid gap-4 sm:grid-cols-2; }
+.section-head { @apply flex flex-wrap items-center justify-between gap-3; }
+.workspace-nav { @apply flex flex-wrap items-center gap-x-5 gap-y-2 pb-3 text-sm font-semibold; border-bottom: 1px solid var(--line); }
+.workspace-nav form { @apply ml-auto; }
+.notification-link { @apply inline-flex min-h-11 items-center gap-1.5; }
+.filters { @apply grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-6; }
+.filters input, .filters select { @apply min-w-0; }
+.task-grid, .stat-grid { @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3; }
+.notification-list { @apply grid gap-3; }
+.task-card { @apply grid min-w-0 content-start gap-3 rounded-2xl p-5; border: 1px solid var(--line); background: var(--surface); }
+.task-card h3 { @apply text-xl font-semibold break-words; }
+.stat-grid dd { @apply text-4xl font-bold; }
+.description { @apply whitespace-pre-wrap break-words; }
+.pill { @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold; color: var(--indigo); background: var(--canvas); border: 1px solid var(--line); }
+.badges { @apply gap-2; }
+.done { color: var(--success); }
+.danger { color: var(--error); }
+.dates { @apply grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm; }
+.dates dt { color: var(--muted); }
+.quiet { background: var(--surface); color: var(--indigo); border: 1px solid var(--line); }
+.quiet:hover, .quiet[aria-pressed="true"] { background: var(--canvas); border-color: var(--indigo); }
+.quiet.danger { color: var(--error); }
+.quiet:disabled { @apply cursor-default; }
+.fit { @apply w-fit; }
+.empty { @apply rounded-xl p-6; border: 1px dashed var(--line); }
+.calendar { @apply rounded-xl p-3 sm:p-5; border: 1px solid var(--line); background: var(--surface); }
+.calendar-grid { @apply grid grid-cols-7 gap-1 text-center text-sm sm:gap-2; }
+.calendar-day { @apply min-w-0 flex-col gap-0 px-0; }
+.calendar-day small { @apply text-xs; }
+.table-wrap { @apply overflow-x-auto rounded-xl; border: 1px solid var(--line); }
+table { @apply w-full text-left; background: var(--surface); }
+th, td { @apply px-4 py-3; border-bottom: 1px solid var(--line); }
+tbody tr:last-child :is(th, td) { border-bottom: 0; }
+.member-form { @apply items-end; }
+.toast { @apply fixed right-4 bottom-4 z-20 flex max-w-[calc(100vw-2rem)] items-center gap-3 shadow-lg; background: var(--surface); }
+.toast button { @apply min-h-8 px-2; }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.dashboard-banner {
+  @apply flex flex-wrap items-end justify-between gap-5 rounded-3xl px-6 py-8 sm:px-9 sm:py-10;
+  background: radial-gradient(ellipse at 90% -15%, #6d5bdf, transparent 60%), #25215d;
+  color: white;
 }
+.dashboard-banner h1 { @apply text-3xl sm:text-5xl; }
+.dashboard-banner p { @apply mt-2 text-indigo-100; }
+.banner-link { @apply inline-flex min-h-11 items-center rounded-xl border border-white/40 px-4 text-sm font-semibold text-white; }
+.banner-link:hover { @apply bg-white/10 no-underline; }
+.admin-workspace .workspace-nav { @apply rounded-2xl border px-4 py-2; background: var(--surface); }
+.admin-metrics { @apply sm:grid-cols-3; }
+.admin-metrics .task-card { border-top: 3px solid var(--indigo); }
+.admin-metrics .task-card:nth-child(2) { border-top-color: var(--success); }
+.admin-metrics .task-card:nth-child(3) { border-top-color: var(--error); }
+.admin-metrics dt { @apply text-sm font-medium; color: var(--muted); }
+.admin-board { @apply scroll-mt-5 rounded-3xl border p-4 sm:p-6; border-color: var(--line); background: var(--surface); }
+.admin-board .filters { @apply rounded-2xl border p-3; border-color: var(--line); background: var(--canvas); }
+.admin-workspace thead { background: var(--canvas); }
